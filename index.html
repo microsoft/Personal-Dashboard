@@ -1,0 +1,984 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Copilot, Agent &amp; Cowork Personal Dashboard</title>
+    <style>
+        :root {
+            --primary: #0078D4;
+            --primary-dark: #005A9E;
+            --accent: #6B2FA0;
+            --accent-light: #9B6BC6;
+            --bg: #F5F5F7;
+            --white: #FFFFFF;
+            --text: #1B1B1B;
+            --text-light: #505050;
+            --border: #E0E0E0;
+            --card-shadow: 0 2px 12px rgba(0,0,0,0.08);
+            --gradient: linear-gradient(135deg, #0078D4, #6B2FA0);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+            color: var(--text);
+            background: var(--bg);
+            line-height: 1.6;
+        }
+
+        /* Hero */
+        .hero {
+            background: var(--gradient);
+            color: white;
+            padding: 80px 24px 60px;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 2.6rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+            letter-spacing: -0.5px;
+        }
+
+        .hero p {
+            font-size: 1.15rem;
+            max-width: 700px;
+            margin: 0 auto 32px;
+            opacity: 0.92;
+        }
+
+        .hero-badges {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .badge {
+            background: rgba(255,255,255,0.18);
+            border: 1px solid rgba(255,255,255,0.3);
+            padding: 8px 18px;
+            border-radius: 24px;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        /* Container */
+        .container {
+            max-width: 1060px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Sections */
+        section {
+            padding: 56px 0;
+        }
+
+        section h2 {
+            font-size: 1.85rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: var(--text);
+        }
+
+        section h2 .icon {
+            margin-right: 8px;
+        }
+
+        section > .container > p {
+            color: var(--text-light);
+            font-size: 1.05rem;
+            margin-bottom: 36px;
+            max-width: 720px;
+        }
+
+        /* Tab cards */
+        .tab-cards {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+        }
+
+        .tab-card {
+            background: var(--white);
+            border-radius: 12px;
+            box-shadow: var(--card-shadow);
+            overflow: hidden;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .tab-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 6px 24px rgba(0,0,0,0.12);
+        }
+
+        .tab-card-header {
+            background: var(--gradient);
+            color: white;
+            padding: 16px 24px;
+            font-weight: 600;
+            font-size: 1.05rem;
+        }
+
+        .tab-card-body {
+            padding: 24px;
+        }
+
+        .tab-card-body ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .tab-card-body li {
+            padding: 6px 0;
+            padding-left: 20px;
+            position: relative;
+            color: var(--text-light);
+        }
+
+        .tab-card-body li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        .tab-card-img {
+            width: 100%;
+            height: 200px;
+            background: var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        .tab-card-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Steps */
+        .steps-section {
+            background: var(--white);
+        }
+
+        .steps-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 0;
+        }
+
+        .step {
+            display: grid;
+            grid-template-columns: 64px 1fr;
+            gap: 20px;
+            padding: 28px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .step:last-child {
+            border-bottom: none;
+        }
+
+        .step-number {
+            width: 48px;
+            height: 48px;
+            background: var(--gradient);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .step h3 {
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+            color: var(--text);
+        }
+
+        .step p, .step ul {
+            color: var(--text-light);
+            font-size: 0.95rem;
+        }
+
+        .step ul {
+            margin-top: 8px;
+            padding-left: 20px;
+        }
+
+        .step li {
+            margin-bottom: 4px;
+        }
+
+        /* Callout */
+        .callout {
+            background: #EBF3FB;
+            border-left: 4px solid var(--primary);
+            padding: 16px 20px;
+            border-radius: 0 8px 8px 0;
+            margin-top: 16px;
+            font-size: 0.92rem;
+            color: var(--text);
+        }
+
+        .callout.warning {
+            background: #FFF4E5;
+            border-left-color: #D97706;
+        }
+
+        .callout strong {
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        /* Data import tabs */
+        .import-tabs {
+            display: flex;
+            gap: 0;
+            margin-bottom: 0;
+        }
+
+        .import-tab {
+            padding: 12px 28px;
+            background: var(--border);
+            border: none;
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--text-light);
+            border-radius: 8px 8px 0 0;
+            transition: background 0.2s, color 0.2s;
+        }
+
+        .import-tab.active {
+            background: var(--white);
+            color: var(--primary);
+        }
+
+        .import-panel {
+            display: none;
+            background: var(--white);
+            border-radius: 0 8px 8px 8px;
+            padding: 36px;
+            box-shadow: var(--card-shadow);
+        }
+
+        .import-panel.active {
+            display: block;
+        }
+
+        /* Prerequisites */
+        .prereqs {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 16px;
+            margin-bottom: 36px;
+        }
+
+        .prereq-item {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .prereq-item .prereq-icon {
+            font-size: 2rem;
+            margin-bottom: 8px;
+        }
+
+        .prereq-item h4 {
+            font-size: 0.95rem;
+            margin-bottom: 4px;
+        }
+
+        .prereq-item p {
+            font-size: 0.85rem;
+            color: var(--text-light);
+        }
+
+        /* Metrics table */
+        .metrics-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 16px;
+            font-size: 0.9rem;
+        }
+
+        .metrics-table th {
+            background: var(--primary);
+            color: white;
+            padding: 10px 14px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .metrics-table td {
+            padding: 10px 14px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .metrics-table tr:nth-child(even) {
+            background: #F8F9FA;
+        }
+
+        /* Glossary */
+        .glossary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(460px, 1fr));
+            gap: 16px;
+        }
+
+        .glossary-item {
+            background: var(--white);
+            border-radius: 10px;
+            padding: 20px 24px;
+            box-shadow: var(--card-shadow);
+        }
+
+        .glossary-item dt {
+            font-weight: 700;
+            color: var(--primary-dark);
+            margin-bottom: 4px;
+        }
+
+        .glossary-item dd {
+            color: var(--text-light);
+            font-size: 0.93rem;
+        }
+
+        /* Tips */
+        .tips-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 16px;
+        }
+
+        .tip {
+            background: var(--white);
+            border-radius: 10px;
+            padding: 20px 24px;
+            box-shadow: var(--card-shadow);
+            display: flex;
+            gap: 14px;
+        }
+
+        .tip-icon {
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .tip p {
+            color: var(--text-light);
+            font-size: 0.93rem;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--text);
+            color: rgba(255,255,255,0.7);
+            text-align: center;
+            padding: 32px 24px;
+            font-size: 0.9rem;
+        }
+
+        footer a {
+            color: #80BDFF;
+            text-decoration: none;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 1.8rem; }
+            .hero p { font-size: 1rem; }
+            .tab-cards { grid-template-columns: 1fr; }
+            .glossary-grid { grid-template-columns: 1fr; }
+            .step { grid-template-columns: 48px 1fr; gap: 14px; }
+            .import-panel { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Hero -->
+    <header class="hero">
+        <h1>Copilot, Agent &amp; Cowork Personal Dashboard</h1>
+        <p>Track Microsoft 365 Copilot, agent, and Cowork activity, measure time saved and credits used, and compare your engagement against your organization — all in one Power BI report.</p>
+        <div class="hero-badges">
+            <span class="badge">📊 Power BI Template</span>
+            <span class="badge">⏱️ Time Saved Tracking</span>
+            <span class="badge">🗺️ Usage Journey</span>
+            <span class="badge">📈 Org Comparison</span>
+            <span class="badge">🤝 Cowork Consumption</span>
+        </div>
+    </header>
+
+    <!-- What's In This Report -->
+    <section id="overview">
+        <div class="container">
+            <h2><span class="icon">📋</span>What's in This Report</h2>
+            <p>Seven interactive tabs cover Copilot adoption, productivity, usage comparisons, agent activity, Cowork consumption, and personalized learning guidance.</p>
+
+            <div class="tab-cards">
+                <!-- Tab 1 -->
+                <div class="tab-card">
+                    <div class="tab-card-header">Tab 1 — Adoption Overview</div>
+                    <div class="tab-card-img">
+                        <img src="images/adoption-overview.png" alt="Adoption Overview">
+                    </div>
+                    <div class="tab-card-body">
+                        <ul>
+                            <li>Total actions and weekly averages</li>
+                            <li>Active days and apps used per week</li>
+                            <li>Estimated time saved</li>
+                            <li>User Category with personalized recommendation</li>
+                            <li>Date slider to zoom into any time period</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Tab 2 -->
+                <div class="tab-card">
+                    <div class="tab-card-header">Tab 2 — Engagement &amp; Productivity</div>
+                    <div class="tab-card-img">
+                        <img src="images/engagement-productivity.png" alt="Engagement & Productivity">
+                    </div>
+                    <div class="tab-card-body">
+                        <ul>
+                            <li>Time saved broken down by app and by week</li>
+                            <li>Features ranked by estimated hours saved</li>
+                            <li>Month-over-month savings trend</li>
+                            <li>Copilot assisted hours and average per month</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Tab 3 -->
+                <div class="tab-card">
+                    <div class="tab-card-header">Tab 3 — Usage Journey</div>
+                    <div class="tab-card-img">
+                        <img src="images/usage-journey.png" alt="Usage Journey">
+                    </div>
+                    <div class="tab-card-body">
+                        <ul>
+                            <li>Your Copilot adoption timeline and milestones</li>
+                            <li>Week-over-week usage trends</li>
+                            <li>Feature discovery progression</li>
+                            <li>Usage patterns and consistency tracking</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Tab 4 -->
+                <div class="tab-card">
+                    <div class="tab-card-header">Tab 4 — Usage Comparisons</div>
+                    <div class="tab-card-img">
+                        <img src="images/usage-comparisons.png" alt="Usage Comparisons">
+                    </div>
+                    <div class="tab-card-body">
+                        <ul>
+                            <li>Your weekly actions vs. org average</li>
+                            <li>Per-app ranking: Outstanding, Strong, or Growth Area</li>
+                            <li>Organization-wide user category distribution</li>
+                            <li>Peer percentile comparison</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Tab 5 -->
+                <div class="tab-card">
+                    <div class="tab-card-header">Tab 5 — Agent Activity</div>
+                    <div class="tab-card-img">
+                        <img src="images/agent-activity.png" alt="Agent Activity">
+                    </div>
+                    <div class="tab-card-body">
+                        <ul>
+                            <li>KPI cards: active agent users, adoption, and 28-day retention</li>
+                            <li>Total credits used and total responses generated</li>
+                            <li>Your agent habit tier (Light &rarr; Moderate &rarr; Frequent &rarr; Daily)</li>
+                            <li>My Usage by Month and My Responses vs. Others Over Time</li>
+                            <li>Agent Usage Details Over Time table</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Tab 6 -->
+                <div class="tab-card">
+                    <div class="tab-card-header">Tab 6 — My Cowork Activity</div>
+                    <div class="tab-card-img">
+                        <img src="images/cowork-activity.png" alt="My Cowork Activity">
+                    </div>
+                    <div class="tab-card-body">
+                        <ul>
+                            <li>Credits used, sessions, active weeks, and credits per session</li>
+                            <li>Latest weekly change in Cowork credits</li>
+                            <li>Weekly credits vs. organization average for consumption volume</li>
+                            <li>Weekly sessions vs. organization average for usage frequency</li>
+                            <li>Credits used vs. combined user spending-policy limits</li>
+                            <li>Personal usage, organization, function, and policy detail</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Tab 7 -->
+                <div class="tab-card">
+                    <div class="tab-card-header">Tab 7 — Learning &amp; Next Steps</div>
+                    <div class="tab-card-body">
+                        <ul>
+                            <li>Prompt Tip of the Week</li>
+                            <li>My Next Unlock — features you haven't tried yet</li>
+                            <li>Personalized Training Recommendation</li>
+                            <li>Curated Learning Resources</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Prerequisites -->
+    <section id="prerequisites" class="steps-section">
+        <div class="container">
+            <h2><span class="icon">✅</span>Prerequisites</h2>
+            <p>Make sure you have the following before getting started.</p>
+
+            <div class="prereqs">
+                <div class="prereq-item">
+                    <div class="prereq-icon">🔑</div>
+                    <h4>Microsoft 365 Copilot License</h4>
+                    <p>Required to generate usage data</p>
+                </div>
+                <div class="prereq-item">
+                    <div class="prereq-icon">📊</div>
+                    <h4>Viva Insights Access</h4>
+                    <p>Analyst Workbench for person queries</p>
+                </div>
+                <div class="prereq-item">
+                    <div class="prereq-icon">💻</div>
+                    <h4>Power BI Desktop</h4>
+                    <p><a href="https://powerbi.microsoft.com/desktop/" target="_blank">Free download from Microsoft</a></p>
+                </div>
+                <div class="prereq-item">
+                    <div class="prereq-icon">📦</div>
+                    <h4>Identifiable user attribute (PersonId)</h4>
+                    <p>Upload a custom attribute (recommended: work email) so each user's data maps correctly.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How to Import Data -->
+    <section id="import-data">
+        <div class="container">
+            <h2><span class="icon">📥</span>How to Import Your Data</h2>
+            <p>Follow these steps to export your Copilot usage data from Viva Insights and connect it to the Power BI template.</p>
+
+            <div class="import-tabs">
+                <button class="import-tab active" onclick="switchTab('viva')">Viva Insights Person Query</button>
+                <button class="import-tab" onclick="switchTab('setup')">Power BI Setup</button>
+                <button class="import-tab" onclick="switchTab('identifier')">Identifier (PersonId)</button>
+            </div>
+
+            <!-- Viva Insights Tab -->
+            <div id="viva" class="import-panel active">
+                <h3 style="margin-bottom: 20px; color: var(--primary-dark);">Step 1 — Build the Person Query</h3>
+                <p style="margin-bottom: 20px; color: var(--text-light);">
+                    Open the <a href="https://analysis.insights.cloud.microsoft/" target="_blank">Viva Insights Analyst Workbench</a> and create a Person Query with the following settings:
+                </p>
+
+                <div class="steps-grid">
+                    <div class="step">
+                        <div class="step-number">1</div>
+                        <div>
+                            <h3>Navigate to Analysis Results</h3>
+                            <p>Go to <a href="https://analysis.insights.cloud.microsoft/" target="_blank">analysis.insights.cloud.microsoft</a> and click <strong>"Analysis results"</strong> in the left sidebar.</p>
+                        </div>
+                    </div>
+
+                    <div class="step">
+                        <div class="step-number">2</div>
+                        <div>
+                            <h3>Create a New Person Query</h3>
+                            <p>Click <strong>"Create analysis"</strong> → select <strong>"Person query"</strong> → click <strong>"Set up analysis"</strong>.</p>
+                        </div>
+                    </div>
+
+                    <div class="step">
+                        <div class="step-number">3</div>
+                        <div>
+                            <h3>Configure Query Settings</h3>
+                            <ul>
+                                <li><strong>Time period:</strong> Last 6 months (rolling)</li>
+                                <li><strong>Group by:</strong> Week</li>
+                                <li><strong>Filter:</strong> Is Active = True</li>
+                                <li><strong>Attributes:</strong> Organization, FunctionType, TimeZone (minimum required)</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="step">
+                        <div class="step-number">4</div>
+                        <div>
+                            <h3>Select Required Metrics</h3>
+                            <p>Under the <strong>Microsoft 365 Copilot</strong> category, select <strong>"All metrics"</strong>.</p>
+
+                            <div class="callout warning">
+                                <strong>⚠️ Important</strong>
+                                Only Microsoft 365 Copilot metrics are required for this report. Missing even one metric will cause blank visuals in Power BI.
+                            </div>
+
+                            <p style="margin-top: 16px;">Key metrics that power this dashboard:</p>
+                            <table class="metrics-table">
+                                <thead>
+                                    <tr>
+                                        <th>Metric</th>
+                                        <th>Used For</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Copilot assisted hours</td>
+                                        <td>Total time saved KPI</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Total Copilot actions taken</td>
+                                        <td>Adoption overview &amp; trends</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Copilot actions taken in [App]</td>
+                                        <td>Per-app breakdown</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Total Meeting hours summarized or recapped</td>
+                                        <td>Teams time saved calculation</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Intelligent recap actions taken</td>
+                                        <td>Meeting recap tracking</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Days of active Copilot usage in [App]</td>
+                                        <td>Consistency &amp; active days</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="step">
+                        <div class="step-number">5</div>
+                        <div>
+                            <h3>Run and Wait for Completion</h3>
+                            <ul>
+                                <li>Click <strong>Save &amp; Run</strong></li>
+                                <li>Wait until <strong>Status = Completed</strong> (may take several hours for first run)</li>
+                                <li>Do NOT export mid-processing</li>
+                                <li>Once complete, copy your <strong>Partition ID</strong> and <strong>Query ID</strong> for Power BI</li>
+                            </ul>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Power BI Setup Tab -->
+            <div id="setup" class="import-panel">
+                <h3 style="margin-bottom: 20px; color: var(--primary-dark);">Step 2 — Connect to Power BI</h3>
+
+                <div class="steps-grid">
+                    <div class="step">
+                        <div class="step-number">1</div>
+                        <div>
+                            <h3>Download the Template</h3>
+                            <p>Choose your data connection method:</p>
+                            <p>📁 <a href="Viva Insights Personal Dashboard V9 (CSV Import pbit).pbit" download><strong>CSV Import Template</strong></a> — Viva Insights Personal Dashboard V9 (CSV Import pbit) — Import from an exported CSV file</p>
+                            <p>🔗 <a href="Viva Insights Personal Dashboard V9 (Direct Import pbit).pbit" download><strong>Direct Query Template</strong></a> — Viva Insights Personal Dashboard V9 (Direct Import pbit) — Connect directly to Viva Insights API using Partition ID &amp; Query ID</p>
+                            <p>🤖 <a href="Personal%20Copilot%2C%20Agent%2C%20%26%20Cowork%20Dashboard%20Template.pbit" download><strong>Copilot, Agent &amp; Cowork Template</strong></a> — Import any combination of a Copilot Dashboard CSV, agent export folder, and Cowork consumption folder.</p>
+                        </div>
+                    </div>
+
+                    <div class="step">
+                        <div class="step-number">2</div>
+                        <div>
+                            <h3>Open in Power BI Desktop</h3>
+                            <p>Double-click the <code>.pbit</code> file. Power BI Desktop will launch and prompt you for your data source connection.</p>
+                        </div>
+                    </div>
+
+                    <div class="step">
+                        <div class="step-number">3</div>
+                        <div>
+                            <h3>Connect to Your Data</h3>
+                            <p><strong>Copilot, Agent &amp; Cowork template:</strong> Enter any available paths for <code>CopilotCsvFilePath</code>, <code>AgentDataFolderPath</code>, and <code>CoworkDataFolderPath</code>; leave unavailable sources blank.<br>
+                            <strong>CSV Import:</strong> Enter the file path to your exported CSV.<br>
+                            <strong>Direct Query:</strong> Enter your <strong>Partition ID</strong> and <strong>Query ID</strong> from the Viva Insights person query.</p>
+                            <div class="callout">
+                                <strong>🤝 Cowork folder contents</strong>
+                                Include <code>PersonServiceCreditsMetrics.csv</code>, <code>PeopleMetaData.csv</code> (or <code>PeopleMetadata.csv</code>), and <code>SpendingPolicyMetadata.csv</code>.
+                            </div>
+                            <div class="callout">
+                                <strong>📊 My Cowork Activity comparisons</strong>
+                                Weekly credits show consumption volume vs. the organization average, weekly sessions show usage frequency vs. the organization average, and credits used vs. user spending limit shows remaining policy capacity. Select one <code>PersonId</code> when testing without RLS; limits are summed across that user's distinct spending policies.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="step">
+                        <div class="step-number">4</div>
+                        <div>
+                            <h3>Filter to Your PersonId</h3>
+                            <p>Use the <strong>PersonId slicer</strong> to filter the report to your own data.</p>
+                        </div>
+                    </div>
+
+                    <div class="step">
+                        <div class="step-number">6</div>
+                        <div>
+                            <h3>Optional: Configure RLS (Row-Level Security)</h3>
+                            <p>The Copilot, Agent and Cowork template includes the <code>ViewOwnData</code> role. Review and test it before publishing:</p>
+                            <ol>
+                                <li>Confirm <code>PersonId</code> contains each user's work email/UPN.</li>
+                                <li>In Power BI Desktop, go to <strong>Modeling → Manage roles</strong> and review <code>ViewOwnData</code>:<pre style="background:#111;padding:8px;border-radius:6px;margin:8px 0;color:#fff;">[PersonId] = USERPRINCIPALNAME()</pre></li>
+                                <li>Test via <strong>Modeling → View as Roles</strong>. Select only <code>ViewOwnData</code>, select <strong>Other user</strong>, and enter that user's email.</li>
+                                <li>Publish the report to Power BI Service. In the service, go to the dataset → <strong>Security</strong> and add users or an Azure AD group to the <code>ViewOwnData</code> role.</li>
+                                <li>Confirm access by sharing the report link with a test user and verifying they only see their rows.</li>
+                            </ol>
+                            <div class="callout warning">
+                                <strong>⚠️ Test one role at a time</strong>
+                                Do not select <code>ViewOwnData</code> together with an unrestricted role. Power BI combines role access, which can expose all rows.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="step">
+                        <div class="step-number">5</div>
+                        <div>
+                            <h3>Publish (Optional)</h3>
+                            <p>To access from your browser, publish to <strong>Power BI Service</strong> via File → Publish → select your workspace.</p>
+
+                            <div class="callout">
+                                <strong>💡 Tip</strong>
+                                After publishing, configure scheduled refresh in Power BI Service to keep your data up-to-date weekly.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+            
+            <!-- Identifier Tab -->
+            <div id="identifier" class="import-panel">
+                <h3 style="margin-bottom: 20px; color: var(--primary-dark);">Identifier (PersonId) — Required for Mapping</h3>
+                <p style="margin-bottom:12px; color: var(--text-light);">This report requires a unique user identifier so data maps to individuals. Best practice: include a custom attribute with each user's work <strong>email</strong> as <code>PersonId</code>.</p>
+                <ul>
+                    <li>Upload the attribute in your Viva Insights organizational data file.</li>
+                    <li>Ensure PersonId values match the format used in Microsoft 365 (work email).</li>
+                </ul>
+                <p>Learn more: <a href="https://learn.microsoft.com/en-us/viva/insights/advanced/admin/prepare-org-data#custom-attributes" target="_blank">MS Learn — Prepare organizational data (custom attributes)</a></p>
+            </div>
+        </div>
+    </section>
+
+    <!-- How Time Saved Is Calculated -->
+    <section id="methodology">
+        <div class="container">
+            <h2><span class="icon">🧮</span>How Time Saved Is Calculated</h2>
+            <p>The dashboard uses Microsoft's estimated time savings methodology.</p>
+
+            <div class="tab-cards" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));">
+                <div class="tab-card">
+                    <div class="tab-card-header">Regular Copilot Actions</div>
+                    <div class="tab-card-body">
+                        <p style="font-size: 2rem; font-weight: 700; color: var(--primary); margin-bottom: 8px;">6 min</p>
+                        <p style="color: var(--text-light);">Each Copilot action (drafting an email, summarizing a chat, creating a formula, etc.) saves an estimated <strong>6 minutes</strong>.</p>
+                    </div>
+                </div>
+                <div class="tab-card">
+                    <div class="tab-card-header">Meeting Recaps &amp; Summaries</div>
+                    <div class="tab-card-body">
+                        <p style="font-size: 2rem; font-weight: 700; color: var(--accent); margin-bottom: 8px;">Actual Duration</p>
+                        <p style="color: var(--text-light);">Meeting summaries and Intelligent Recap count the <strong>actual meeting length</strong> as time saved, not a flat estimate.</p>
+                    </div>
+                </div>
+                <div class="tab-card">
+                    <div class="tab-card-header">The Formula</div>
+                    <div class="tab-card-body">
+                        <p style="font-size: 2rem; font-weight: 700; color: var(--primary-dark); margin-bottom: 8px;">The Equation</p>
+                        <p style="color: var(--text-light);">
+                            <strong>Copilot Assisted Hours</strong> =<br>
+                            Meeting hours recapped/summarized<br>
+                            + (Non-meeting action count × 6 min)
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tips -->
+    <section id="tips" class="steps-section">
+        <div class="container">
+            <h2><span class="icon">💡</span>Tips</h2>
+
+            <div class="tips-list">
+                <div class="tip">
+                    <div class="tip-icon">📅</div>
+                    <div>
+                        <p>Use the <strong>date slider</strong> at the top of each tab to filter by the last 4 weeks, last quarter, or any custom range.</p>
+                    </div>
+                </div>
+                <div class="tip">
+                    <div class="tip-icon">🔄</div>
+                    <div>
+                        <p>This report refreshes weekly — timing may vary by your organizational configuration.</p>
+                    </div>
+                </div>
+                <div class="tip">
+                    <div class="tip-icon">👤</div>
+                    <div>
+                        <p>Always use the <strong>PersonId slicer</strong> to make sure you're viewing your own data.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Glossary -->
+    <section id="glossary">
+        <div class="container">
+            <h2><span class="icon">📖</span>Glossary</h2>
+            <p>Key terms used throughout the dashboard.</p>
+
+            <div class="glossary-grid">
+                <div class="glossary-item">
+                    <dl>
+                        <dt>Org Average</dt>
+                        <dd>The average usage across all employees in your organization with a Copilot license.</dd>
+                    </dl>
+                </div>
+                <div class="glossary-item">
+                    <dl>
+                        <dt>Peer Rank / Percentile</dt>
+                        <dd>Where you fall compared to peers. "Top 20%" means you use Copilot more than 80% of colleagues.</dd>
+                    </dl>
+                </div>
+                <div class="glossary-item">
+                    <dl>
+                        <dt>User Category</dt>
+                        <dd>Your usage tier — Power User, Habitual User, Novice User, Low User, or Non-User — based on consistency and volume over the last 12 weeks.</dd>
+                    </dl>
+                </div>
+                <div class="glossary-item">
+                    <dl>
+                        <dt>Outstanding / Strong / Growth Area</dt>
+                        <dd>How your usage ranks per app. Outstanding = Top 10%, Strong = Top 25%, Growth Area = Bottom 50%.</dd>
+                    </dl>
+                </div>
+                <div class="glossary-item">
+                    <dl>
+                        <dt>Consistency</dt>
+                        <dd>How many weeks you used Copilot out of the weeks in your selected date range.</dd>
+                    </dl>
+                </div>
+                <div class="glossary-item">
+                    <dl>
+                        <dt>Actions</dt>
+                        <dd>Each time you use a Copilot feature (e.g., drafting an email, summarizing a meeting) counts as one action.</dd>
+                    </dl>
+                </div>
+                <div class="glossary-item">
+                    <dl>
+                        <dt>Time Saved</dt>
+                        <dd>An estimate based on Microsoft's research — each action saves ~6 minutes. Meeting summaries count actual meeting length.</dd>
+                    </dl>
+                </div>
+                <div class="glossary-item">
+                    <dl>
+                        <dt>Copilot Assisted Hours</dt>
+                        <dd>Total estimated time saved: meeting hours recapped/summarized + non-meeting actions × 6 minutes.</dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Troubleshooting -->
+    <section id="troubleshooting" class="steps-section">
+        <div class="container">
+            <h2><span class="icon">🔧</span>Troubleshooting</h2>
+            <p>Common issues and how to fix them.</p>
+
+            <table class="metrics-table">
+                <thead>
+                    <tr>
+                        <th>Symptom</th>
+                        <th>Cause</th>
+                        <th>Fix</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Blank visuals</td>
+                        <td>Missing required metric(s)</td>
+                        <td>Re-run query with all Microsoft 365 Copilot metrics selected</td>
+                    </tr>
+                    <tr>
+                        <td>Missing slicers/labels</td>
+                        <td>Skipped Org or FunctionType attribute</td>
+                        <td>Add both attributes and reprocess</td>
+                    </tr>
+                    <tr>
+                        <td>Trend calculations broken</td>
+                        <td>Grouped by Month instead of Week</td>
+                        <td>Use Week grouping in query settings</td>
+                    </tr>
+                    <tr>
+                        <td>Partial weeks of data</td>
+                        <td>Exported before query finished</td>
+                        <td>Wait until Status = Completed</td>
+                    </tr>
+                    <tr>
+                        <td>Load error in Power BI</td>
+                        <td>CSV file open in Excel</td>
+                        <td>Close the file and retry</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>Copilot, Agent &amp; Cowork Personal Dashboard &nbsp;•&nbsp; Built with <a href="https://powerbi.microsoft.com/" target="_blank">Power BI</a> &amp; <a href="https://www.microsoft.com/en-us/microsoft-viva/insights" target="_blank">Viva Insights</a></p>
+        <p style="margin-top: 8px;">For data import reference, see <a href="https://github.com/microsoft/DecodingSuperUsage" target="_blank">microsoft/DecodingSuperUsage</a></p>
+    </footer>
+
+    <script>
+        function switchTab(tabId) {
+            document.querySelectorAll('.import-tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.import-panel').forEach(p => p.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            event.target.classList.add('active');
+        }
+    </script>
+
+</body>
+</html>
