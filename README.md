@@ -34,15 +34,15 @@
 
   | Adoption Overview | Engagement & Productivity |
   |---|---|
-  | ![](images/adoption-overview.png) | ![](images/engagement-productivity.png) |
+   | ![](images/adoption-overview.png?v=712f65e) | ![](images/engagement-productivity.png?v=712f65e) |
 
   | Usage Journey | Usage Comparisons |
   |---|---|
-  | ![](images/usage-journey.png) | ![](images/usage-comparisons.png) |
+   | ![](images/usage-journey.png?v=712f65e) | ![](images/usage-comparisons.png?v=712f65e) |
 
   | Agent Activity | My Cowork Activity |
   |---|---|
-  | ![](images/agent-activity.png) | ![](images/cowork-activity.png) |
+   | ![](images/agent-activity.png?v=712f65e) | ![](images/cowork-activity.png?v=712f65e) |
 
   ---
 
