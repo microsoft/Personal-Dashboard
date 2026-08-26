@@ -1,6 +1,16 @@
 # Copilot, Agent, and Cowork Personal Dashboard
- ---                                                                                                         
-                  
+ ---
+
+  ## 🎬 Watch First
+
+  Plays here in the page — no download.
+
+  **A guided tour of the report** — adoption, time saved, your usage journey, agent and cowork activity, and how you compare. *(3m 15s)*
+
+  https://github.com/user-attachments/assets/c8c25a72-367e-41c3-ad50-1cb83dd8b1c0
+
+ ---
+
   ## What's in This Report
 
   ### Tab 1 – Adoption Overview                                                                               
